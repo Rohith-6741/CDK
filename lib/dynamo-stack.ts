@@ -1,5 +1,6 @@
 import * as cdk from 'aws-cdk-lib/core';
 import { Construct } from 'constructs';
+import * as dynamodb from 'aws-cdk-lib/aws-dynamodb';
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
 export class DynamoStack extends cdk.Stack {
@@ -12,5 +13,11 @@ export class DynamoStack extends cdk.Stack {
     // const queue = new sqs.Queue(this, 'DynamoQueue', {
     //   visibilityTimeout: cdk.Duration.seconds(300)
     // });
+    new dynamodb.Table(this, 'GlobalTable', {
+      tableName: 'MyGlobalTable',
+      partitionKey: { name: 'id', type: dynamodb.AttributeType.STRING },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      replicationRegions: ['us-east-1', 'ap-south-1'],
+    });
   }
 }
